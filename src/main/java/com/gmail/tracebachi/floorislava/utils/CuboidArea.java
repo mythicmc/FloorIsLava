@@ -17,10 +17,14 @@
 package com.gmail.tracebachi.floorislava.utils;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -32,10 +36,14 @@ public class CuboidArea {
 
     private Point upper;
     private Point lower;
+    private List<Location> safeBlocks = new ArrayList<>();
 
-    public CuboidArea(ConfigurationSection alpha, ConfigurationSection beta) {
+    public CuboidArea(ConfigurationSection alpha, ConfigurationSection beta, String worldName) {
         Preconditions.checkNotNull(alpha, "Point was null.");
         Preconditions.checkNotNull(beta, "Point was null.");
+
+        // Add as class property?
+        World world = Bukkit.getWorld(worldName);
 
         int alphaX = alpha.getInt("x");
         int alphaY = alpha.getInt("y");
@@ -44,8 +52,29 @@ public class CuboidArea {
         int betaY = beta.getInt("y");
         int betaZ = beta.getInt("z");
 
-        upper = new Point(Math.max(alphaX, betaX), Math.max(alphaY, betaY), Math.max(alphaZ, betaZ));
-        lower = new Point(Math.min(alphaX, betaX), Math.min(alphaY, betaY), Math.min(alphaZ, betaZ));
+        int highestX = Math.max(alphaX, betaX);
+        int highestY = Math.max(alphaY, betaY);
+        int highestZ = Math.max(alphaZ, betaZ);
+
+        int lowestX = Math.min(alphaX, betaX);
+        int lowestY = Math.min(alphaY, betaY);
+        int lowestZ = Math.min(alphaZ, betaZ);
+
+        upper = new Point(highestX, highestY, highestZ);
+        lower = new Point(lowestX, lowestY, lowestZ);
+
+        for (int x = lowestX; x <= highestX; x++) {
+            for (int z = lowestZ; z <= highestZ; z++ ) {
+                for (int y = highestY; y >= lowestY; y--) {
+                    if (!world.getBlockAt(x, y, z).getType().isSolid()) {
+                        continue;
+                    }
+
+                    safeBlocks.add(new Location(world, x, y, z));
+                    break;
+                }
+            }
+        }
     }
 
     public Point getUpper() {
@@ -85,5 +114,18 @@ public class CuboidArea {
                 upper.y() - 1,
                 lower.z() + 1 + RANDOM.nextInt(upper.z() - lower.z() - 1) + 0.5
         );
+    }
+
+    public Location getRandomSafeLocationInside() {
+        return safeBlocks.get(new Random().nextInt(safeBlocks.size()));
+    }
+
+    public void removeSafeBlock(Block block) {
+        safeBlocks.remove(block.getLocation());
+
+        Block blockBelow = block.getWorld().getBlockAt(block.getX(), block.getY() -1, block.getZ());
+        if (blockBelow.getType().isSolid()) {
+            safeBlocks.add(blockBelow.getLocation());
+        }
     }
 }
