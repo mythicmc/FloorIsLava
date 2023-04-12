@@ -113,10 +113,20 @@ public class FloorGuiMenuListener implements Listener {
             return;
         }
 
-        if (matchesItemStack(FloorGuiMenu.TNT_ITEM, clickedItem)) {
+        if (matchesItemStack(FloorGuiMenu.FAKE_TNT_ITEM, clickedItem)) {
+            int oldCount = loadout.faketnt;
+            loadout.faketnt = Math.max(0, loadout.faketnt + change);
+            playSoundOnCondition(player, loadout.faketnt != oldCount);
+
+            int pointsAmount = maxPoints - loadout.countSum();
+            if (pointsAmount == 0) pointsAmount = 1;
+            updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
+            updateItemStackAmount(inventory, FloorGuiMenu.FAKE_TNT_ITEM, 18, loadout.faketnt);
+        } else if (matchesItemStack(FloorGuiMenu.TNT_ITEM, clickedItem)) {
             int oldCount = loadout.tnt;
             loadout.tnt = Math.max(0, loadout.tnt + change);
             playSoundOnCondition(player, loadout.tnt != oldCount);
+
             int pointsAmount = maxPoints - loadout.countSum();
             if (pointsAmount == 0) pointsAmount = 1;
             updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
@@ -175,6 +185,15 @@ public class FloorGuiMenuListener implements Listener {
             if (pointsAmount == 0) pointsAmount = 1;
             updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
             updateItemStackAmount(inventory, FloorGuiMenu.STEAL_ITEM, 25, loadout.steal);
+        } else if (matchesItemStack(FloorGuiMenu.RANDOM_TP_ITEM, clickedItem)) {
+            int oldCount = loadout.randomTp;
+            loadout.randomTp = Math.max(0, loadout.randomTp + change);
+            playSoundOnCondition(player, loadout.randomTp != oldCount);
+
+            int pointsAmount = maxPoints - loadout.countSum();
+            if (pointsAmount == 0) pointsAmount = 1;
+            updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
+            updateItemStackAmount(inventory, FloorGuiMenu.RANDOM_TP_ITEM, 26, loadout.randomTp);
         }
     }
 

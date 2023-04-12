@@ -21,6 +21,7 @@ BoosterBroadcastRange: 100
 
 # Delays in milliseconds between item uses
 ItemUseDelays:
+  FakeTNT: 5000
   ThrowingTNT: 5000
   PlayerLauncher: 5000
   Webber: 5000
@@ -28,6 +29,7 @@ ItemUseDelays:
   Boost: 5000
   Chikun: 5000
   Steal: 5000
+  RandomTp: 5000
 
 # Points make up the cuboid where players can break blocks
 # Being outside this cuboid will leave players from the arena

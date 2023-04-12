@@ -23,7 +23,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +41,7 @@ public class FloorGuiMenu {
     public static final ItemStack HELP_ITEM = new ItemStack(Material.MAP);
     public static final ItemStack POINTS_ITEM = new ItemStack(Material.EMERALD);
 
+    public static final ItemStack FAKE_TNT_ITEM = new ItemStack(Material.REDSTONE_LAMP);
     public static final ItemStack TNT_ITEM = new ItemStack(Material.TNT);
     public static final ItemStack HOOK_ITEM = new ItemStack(Material.TRIPWIRE_HOOK);
     public static final ItemStack WEB_ITEM = new ItemStack(Material.COBWEB);
@@ -49,6 +49,7 @@ public class FloorGuiMenu {
     public static final ItemStack BOOST_ITEM = new ItemStack(Material.FEATHER);
     public static final ItemStack CHIKUN_ITEM = new ItemStack(Material.EGG);
     public static final ItemStack STEAL_ITEM = new ItemStack(Material.FLINT_AND_STEEL);
+    public static final ItemStack RANDOM_TP_ITEM = new ItemStack(Material.CHORUS_FRUIT);
 
     private final Arena arena;
     private final Inventory inventory;
@@ -78,6 +79,7 @@ public class FloorGuiMenu {
         int maxPoints = arena.getBooster().isActive() ? 10 : 5;
 
         inventory.setItem(13, cloneWithAmount(POINTS_ITEM, maxPoints - loadout.countSum()));
+        inventory.setItem(18, cloneWithAmount(FAKE_TNT_ITEM, loadout.faketnt));
         inventory.setItem(19, cloneWithAmount(TNT_ITEM, loadout.tnt));
         inventory.setItem(20, cloneWithAmount(HOOK_ITEM, loadout.hook));
         inventory.setItem(21, cloneWithAmount(WEB_ITEM, loadout.web));
@@ -85,6 +87,7 @@ public class FloorGuiMenu {
         inventory.setItem(23, cloneWithAmount(BOOST_ITEM, loadout.boost));
         inventory.setItem(24, cloneWithAmount(CHIKUN_ITEM, loadout.chikun));
         inventory.setItem(25, cloneWithAmount(STEAL_ITEM, loadout.steal));
+        inventory.setItem(26, cloneWithAmount(RANDOM_TP_ITEM, loadout.randomTp));
 
         player.openInventory(inventory);
     }
@@ -147,6 +150,17 @@ public class FloorGuiMenu {
             throw new NullPointerException("The points item meta is null for some reasons.");
         meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Loadout Points");
         POINTS_ITEM.setItemMeta(meta);
+
+        meta = FAKE_TNT_ITEM.getItemMeta();
+        if (meta == null)
+            throw new NullPointerException("The fake tnt item meta is null for some reasons.");
+        meta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Throwing Fake TNT ");
+        meta.setLore(Arrays.asList(
+                ChatColor.WHITE + "Throw tnt that won't explode at",
+                ChatColor.WHITE + "players by right clicking it!",
+                ChatColor.YELLOW + "Left Click: Add",
+                ChatColor.YELLOW + "Right Click: Remove"));
+        FAKE_TNT_ITEM.setItemMeta(meta);
 
         meta = TNT_ITEM.getItemMeta();
         if (meta == null)
@@ -225,5 +239,17 @@ public class FloorGuiMenu {
                 ChatColor.YELLOW + "Left Click: Add",
                 ChatColor.YELLOW + "Right Click: Remove"));
         STEAL_ITEM.setItemMeta(meta);
+
+        meta = RANDOM_TP_ITEM.getItemMeta();
+        if (meta == null)
+            throw new NullPointerException("The random tp item meta is null for some reasons.");
+        meta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Random Teleport");
+        meta.setLore(Arrays.asList(
+                ChatColor.WHITE + "You will be teleported to",
+                ChatColor.WHITE + "a random block in the arena",
+                ChatColor.WHITE + "whenever you need to!",
+                ChatColor.YELLOW + "Left Click: Add",
+                ChatColor.YELLOW + "Right Click: Remove"));
+        RANDOM_TP_ITEM.setItemMeta(meta);
     }
 }
