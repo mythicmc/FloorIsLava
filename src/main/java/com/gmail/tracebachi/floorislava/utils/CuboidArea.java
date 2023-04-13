@@ -128,7 +128,7 @@ public class CuboidArea {
 
         // Starting from the block below from the broken block, check if it's solid. If it is, add it to the
         // safe blocks list. If it isn't, don't do anything.
-        for (int y = block.getY() - 1; y >= lower.y(); y++) {
+        for (int y = block.getY() - 1; y >= lower.y(); y--) {
             Block blockBelow = block.getWorld().getBlockAt(block.getX(), y, block.getZ());
             if (blockBelow.getType().isSolid()) {
                 safeBlocks.add(blockBelow.getLocation());
