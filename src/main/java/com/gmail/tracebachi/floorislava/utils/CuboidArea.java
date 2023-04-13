@@ -120,12 +120,20 @@ public class CuboidArea {
         return safeBlocks.get(new Random().nextInt(safeBlocks.size()));
     }
 
-    public void removeSafeBlock(Block block) {
+    public void removeSafeBlock(Block block, boolean removedByDegradation) {
         safeBlocks.remove(block.getLocation());
 
-        Block blockBelow = block.getWorld().getBlockAt(block.getX(), block.getY() -1, block.getZ());
-        if (blockBelow.getType().isSolid()) {
-            safeBlocks.add(blockBelow.getLocation());
+        // If the block was removed because the arena shrunk, it won't loop through the blocks below.
+        if (removedByDegradation) return;
+
+        // Starting from the block below from the broken block, check if it's solid. If it is, add it to the
+        // safe blocks list. If it isn't, don't do anything.
+        for (int y = block.getY() - 1; y >= lower.y(); y++) {
+            Block blockBelow = block.getWorld().getBlockAt(block.getX(), y, block.getZ());
+            if (blockBelow.getType().isSolid()) {
+                safeBlocks.add(blockBelow.getLocation());
+                break;
+            }
         }
     }
 }
