@@ -1,13 +1,10 @@
 package com.gmail.tracebachi.floorislava.arena.perks;
 
 import com.gmail.tracebachi.floorislava.utils.CuboidArea;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.logging.Level;
 
 public class RandomTp extends Perk {
 
