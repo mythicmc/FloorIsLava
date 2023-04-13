@@ -67,13 +67,13 @@ public class ArenaBlocks {
                 if (i == (lower.x() + amount) || i == (upper.x() - amount) || j == (lower.z() + amount) || j == (upper.z() - amount)) {
                     for (int k = lower.y(); k <= upper.y(); ++k) {
                         world.getBlockAt(i, k, j).setType(Material.AIR);
-                        getCuboidArea().removeSafeBlock(world.getBlockAt(i, k, j));
+                        getCuboidArea().removeSafeBlock(world.getBlockAt(i, k, j), true);
                     }
                 }
                 if (topDecay) {
                     int y = upper.y() - amount / 2;
                     world.getBlockAt(i, y, j).setType(Material.AIR);
-                    getCuboidArea().removeSafeBlock(world.getBlockAt(i, y, j));
+                    getCuboidArea().removeSafeBlock(world.getBlockAt(i, y, j), true);
                 }
             }
         }

@@ -444,7 +444,7 @@ public class Arena implements Listener {
             Location clicked = clickedBlock.getLocation();
             if (arenaBlocks.getCuboidArea().isInside(clicked)) {
                 clickedBlock.setType(Material.AIR);
-                arenaBlocks.getCuboidArea().removeSafeBlock(clickedBlock);
+                arenaBlocks.getCuboidArea().removeSafeBlock(clickedBlock, false);
             }
             return;
         }
@@ -531,7 +531,7 @@ public class Arena implements Listener {
             if (arenaCuboidArea.isInside(block.getLocation())) {
                 if (started) {
                     block.setType(Material.AIR);
-                    arenaBlocks.getCuboidArea().removeSafeBlock(block);
+                    arenaBlocks.getCuboidArea().removeSafeBlock(block, false);
                 }
             }
         }
