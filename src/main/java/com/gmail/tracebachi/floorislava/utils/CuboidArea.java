@@ -36,6 +36,7 @@ public class CuboidArea {
 
     private Point upper;
     private Point lower;
+    private List<Location> savedSafeBlocks = new ArrayList<>();
     private List<Location> safeBlocks = new ArrayList<>();
 
     public CuboidArea(ConfigurationSection alpha, ConfigurationSection beta, String worldName) {
@@ -70,6 +71,7 @@ public class CuboidArea {
                         continue;
                     }
 
+                    savedSafeBlocks.add(new Location(world, x, y ,z));
                     safeBlocks.add(new Location(world, x, y, z));
                     break;
                 }
@@ -108,15 +110,34 @@ public class CuboidArea {
     }
 
     public Location getRandomLocationInside(World world) {
+        int randomX;
+        int randomZ;
+
+        if (upper.x() == lower.x()) {
+            randomX = upper.x();
+        } else {
+            randomX = lower.x() + 1 + RANDOM.nextInt(upper.x() - lower.x() - 1);
+        }
+
+        if (upper.z() == lower.z()) {
+            randomZ = upper.z();
+        } else {
+            randomZ = lower.z() + 1 + RANDOM.nextInt(upper.z() - lower.z() - 1);
+        }
+
         return new Location(
                 world,
-                lower.x() + 1 + RANDOM.nextInt(upper.x() - lower.x() - 1) + 0.5,
+                randomX + 0.5,
                 upper.y() - 1,
-                lower.z() + 1 + RANDOM.nextInt(upper.z() - lower.z() - 1) + 0.5
+                randomZ + 0.5
         );
     }
 
     public Location getRandomSafeLocationInside() {
+        if (safeBlocks.size() == 0) {
+            return null;
+        }
+
         return safeBlocks.get(new Random().nextInt(safeBlocks.size()));
     }
 
@@ -135,5 +156,10 @@ public class CuboidArea {
                 break;
             }
         }
+    }
+
+    // Use this when an arena ends. Otherwise, blocks broken in a game won't count as safe blocks in next game.
+    public void restoreSavedBlocks() {
+        safeBlocks = new ArrayList<>(savedSafeBlocks);
     }
 }
