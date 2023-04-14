@@ -56,6 +56,7 @@ public class ArenaBlocks {
         for (BlockState state : blockStates)
             state.update(true);
         blockStates.clear();
+        getCuboidArea().restoreSavedBlocks();
     }
 
     public void degradeBlocks(World world, int amount) {
