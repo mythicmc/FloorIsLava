@@ -26,7 +26,6 @@ public class FakeTNT extends Perk{
     public boolean onPerkActivation(PlayerInteractEvent e, PlayerInteractEntityEvent entityEvent) {
         if (e == null)
             return false;
-        Bukkit.getLogger().log(Level.SEVERE, "Called!");
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Location location = Objects.requireNonNull(e.getClickedBlock(),
                     "If a block was right clicked, why'd this be null?").getLocation();
