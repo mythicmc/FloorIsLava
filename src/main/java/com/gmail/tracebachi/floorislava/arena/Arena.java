@@ -300,7 +300,8 @@ public class Arena implements Listener {
         arenaCuboidArea = new CuboidArea(
                 config.getConfigurationSection("ArenaArea.One"),
                 config.getConfigurationSection("ArenaArea.Two"),
-                config.get("WorldName").toString());
+                config.get("WorldName").toString(),
+                true);
 
         perkHandler = new PerkHandler(arenaCuboidArea, plugin);
         voteHandler = new VoteHandler();
@@ -308,7 +309,8 @@ public class Arena implements Listener {
         watchCuboidArea = new CuboidArea(
                 config.getConfigurationSection("WaitArea.One"),
                 config.getConfigurationSection("WaitArea.Two"),
-                config.get("WorldName").toString());
+                config.get("WorldName").toString(),
+                false);
 
         arenaBlocks = new ArenaBlocks(arenaCuboidArea);
     }

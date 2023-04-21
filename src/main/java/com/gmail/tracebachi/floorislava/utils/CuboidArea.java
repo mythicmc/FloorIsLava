@@ -39,7 +39,7 @@ public class CuboidArea {
     private List<Location> savedSafeBlocks = new ArrayList<>();
     private List<Location> safeBlocks = new ArrayList<>();
 
-    public CuboidArea(ConfigurationSection alpha, ConfigurationSection beta, String worldName) {
+    public CuboidArea(ConfigurationSection alpha, ConfigurationSection beta, String worldName, boolean addSafeBlocks) {
         Preconditions.checkNotNull(alpha, "Point was null.");
         Preconditions.checkNotNull(beta, "Point was null.");
 
@@ -64,16 +64,18 @@ public class CuboidArea {
         upper = new Point(highestX, highestY, highestZ);
         lower = new Point(lowestX, lowestY, lowestZ);
 
-        for (int x = lowestX; x <= highestX; x++) {
-            for (int z = lowestZ; z <= highestZ; z++ ) {
-                for (int y = highestY; y >= lowestY; y--) {
-                    if (!world.getBlockAt(x, y, z).getType().isSolid()) {
-                        continue;
-                    }
+        if (addSafeBlocks) {
+            for (int x = lowestX; x <= highestX; x++) {
+                for (int z = lowestZ; z <= highestZ; z++ ) {
+                    for (int y = highestY; y >= lowestY; y--) {
+                        if (!world.getBlockAt(x, y, z).getType().isSolid()) {
+                            continue;
+                        }
 
-                    savedSafeBlocks.add(new Location(world, x, y ,z));
-                    safeBlocks.add(new Location(world, x, y, z));
-                    break;
+                        savedSafeBlocks.add(new Location(world, x, y ,z));
+                        safeBlocks.add(new Location(world, x, y, z));
+                        break;
+                    }
                 }
             }
         }
