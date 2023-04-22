@@ -32,6 +32,7 @@ public class PerkHandler {
 
     private void init() {
         this.perks = new HashMap<>();
+        this.add("faketnt", new FakeTNT(plugin));
         this.add("tnt", new TNT(plugin));
         this.add("hook", new Hook(arenaArea));
         this.add("web", new Web(arenaArea));
@@ -39,6 +40,7 @@ public class PerkHandler {
         this.add("boost", new Boost(arenaArea));
         this.add("chikun", new Chikun());
         this.add("steal", new Steal());
+        this.add("randomtp", new RandomTp(arenaArea));
     }
 
     private void add(String name, Perk perk) {

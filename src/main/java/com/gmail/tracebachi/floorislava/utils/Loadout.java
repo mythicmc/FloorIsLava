@@ -27,6 +27,7 @@ import static org.bukkit.ChatColor.*;
  */
 public class Loadout {
 
+    public static final ItemStack FAKE_TNT_ITEM = new ItemStack(Material.REDSTONE_LAMP);
     public static final ItemStack TNT_ITEM = new ItemStack(Material.TNT);
     public static final ItemStack HOOK_ITEM = new ItemStack(Material.TRIPWIRE_HOOK);
     public static final ItemStack WEB_ITEM = new ItemStack(Material.COBWEB);
@@ -34,8 +35,15 @@ public class Loadout {
     public static final ItemStack BOOST_ITEM = new ItemStack(Material.FEATHER);
     public static final ItemStack CHIKUN_ITEM = new ItemStack(Material.EGG);
     public static final ItemStack STEAL_ITEM = new ItemStack(Material.FLINT_AND_STEEL);
+    public static final ItemStack RANDOM_TP_ITEM = new ItemStack(Material.CHORUS_FRUIT);
 
     static {
+        ItemMeta fakeTntMeta = FAKE_TNT_ITEM.getItemMeta();
+        if (fakeTntMeta == null)
+            throw new NullPointerException("The fake TNT item meta is null for some reasons.");
+        fakeTntMeta.setDisplayName(GOLD + "Fake TNT");
+        FAKE_TNT_ITEM.setItemMeta(fakeTntMeta);
+
         ItemMeta tntMeta = TNT_ITEM.getItemMeta();
         if (tntMeta == null)
             throw new NullPointerException("The tnt item meta is null for some reasons.");
@@ -79,8 +87,15 @@ public class Loadout {
             throw new NullPointerException("The steal item meta is null for some reasons.");
         stealMeta.setDisplayName(BLUE + "Steal");
         STEAL_ITEM.setItemMeta(stealMeta);
+
+        ItemMeta randomTpMeta = RANDOM_TP_ITEM.getItemMeta();
+        if (randomTpMeta == null)
+            throw new NullPointerException("The random tp item meta is null for some reasons.");
+        randomTpMeta.setDisplayName(DARK_PURPLE + "Random Teleport");
+        RANDOM_TP_ITEM.setItemMeta(randomTpMeta);
     }
 
+    public int faketnt;
     public int tnt;
     public int hook;
     public int web;
@@ -88,8 +103,10 @@ public class Loadout {
     public int boost;
     public int chikun;
     public int steal;
+    public int randomTp;
 
     public Loadout() {
+        faketnt = 0;
         tnt = 0;
         hook = 0;
         web = 0;
@@ -97,9 +114,10 @@ public class Loadout {
         boost = 0;
         chikun = 0;
         steal = 0;
+        randomTp = 0;
     }
 
     public int countSum() {
-        return tnt + hook + web + invis + boost + chikun + steal;
+        return faketnt + tnt + hook + web + invis + boost + chikun + steal + randomTp;
     }
 }

@@ -299,14 +299,18 @@ public class Arena implements Listener {
 
         arenaCuboidArea = new CuboidArea(
                 config.getConfigurationSection("ArenaArea.One"),
-                config.getConfigurationSection("ArenaArea.Two"));
+                config.getConfigurationSection("ArenaArea.Two"),
+                config.get("WorldName").toString(),
+                true);
 
         perkHandler = new PerkHandler(arenaCuboidArea, plugin);
         voteHandler = new VoteHandler();
 
         watchCuboidArea = new CuboidArea(
                 config.getConfigurationSection("WaitArea.One"),
-                config.getConfigurationSection("WaitArea.Two"));
+                config.getConfigurationSection("WaitArea.Two"),
+                config.get("WorldName").toString(),
+                false);
 
         arenaBlocks = new ArenaBlocks(arenaCuboidArea);
     }
@@ -403,13 +407,15 @@ public class Arena implements Listener {
             //TODO should probably be optimized later on
             Random random = new Random();
             ItemStack[] newItems = new ItemStack[]{
+                    Loadout.FAKE_TNT_ITEM.clone(),
                     Loadout.BOOST_ITEM.clone(),
                     Loadout.CHIKUN_ITEM.clone(),
                     Loadout.HOOK_ITEM.clone(),
                     Loadout.INVIS_ITEM.clone(),
                     Loadout.STEAL_ITEM.clone(),
                     Loadout.WEB_ITEM.clone(),
-                    Loadout.TNT_ITEM.clone()};
+                    Loadout.TNT_ITEM.clone(),
+                    Loadout.RANDOM_TP_ITEM.clone()};
             int i, choice, itemIndex;
             ItemStack item;
             int chestItemAmount = 2;
@@ -440,6 +446,7 @@ public class Arena implements Listener {
             Location clicked = clickedBlock.getLocation();
             if (arenaBlocks.getCuboidArea().isInside(clicked)) {
                 clickedBlock.setType(Material.AIR);
+                arenaBlocks.getCuboidArea().removeSafeBlock(clickedBlock, false);
             }
             return;
         }
@@ -518,10 +525,15 @@ public class Arena implements Listener {
         if (!event.getEntity().hasMetadata("FIL"))
             return;
         event.setCancelled(true);
+
+        if (event.getEntity().hasMetadata("FakeTNT"))
+            return;
+
         for (Block block : blocksToBeDestroyed) {
             if (arenaCuboidArea.isInside(block.getLocation())) {
                 if (started) {
                     block.setType(Material.AIR);
+                    arenaBlocks.getCuboidArea().removeSafeBlock(block, false);
                 }
             }
         }
@@ -742,6 +754,7 @@ public class Arena implements Listener {
             }
         }
         if (playing.size() > 1) {
+            if (degradeOn == 0) return;
             if (elapsedTicks >= startDegradeOn && (elapsedTicks % degradeOn) == 0) {
                 arenaBlocks.degradeBlocks(world, degradeLevel);
                 degradeLevel++;
@@ -896,6 +909,11 @@ public class Arena implements Listener {
         int c = 0;
         if (loadout == null)
             return contents;
+        if (loadout.faketnt > 0) {
+            contents[c] = Loadout.FAKE_TNT_ITEM.clone();
+            contents[c].setAmount(loadout.faketnt);
+            c++;
+        }
         if (loadout.tnt > 0) {
             contents[c] = Loadout.TNT_ITEM.clone();
             contents[c].setAmount(loadout.tnt);
@@ -929,6 +947,11 @@ public class Arena implements Listener {
         if (loadout.steal > 0) {
             contents[c] = Loadout.STEAL_ITEM.clone();
             contents[c].setAmount((loadout.steal));
+            c++;
+        }
+        if (loadout.randomTp > 0) {
+            contents[c] = Loadout.RANDOM_TP_ITEM.clone();
+            contents[c].setAmount((loadout.randomTp));
         }
         return contents;
     }

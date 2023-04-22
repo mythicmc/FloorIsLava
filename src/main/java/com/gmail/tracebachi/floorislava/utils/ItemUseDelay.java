@@ -29,6 +29,7 @@ public class ItemUseDelay {
 
     public ItemUseDelay(FileConfiguration config) {
         this.delays = new HashMap<>();
+        this.set("faketnt", config.getInt("ItemUseDelays.FakeTNT"));
         this.set("tnt", config.getInt("ItemUseDelays.ThrowingTNT"));
         this.set("hook", config.getInt("ItemUseDelays.PlayerLauncher"));
         this.set("web", config.getInt("ItemUseDelays.Webber"));
@@ -36,6 +37,7 @@ public class ItemUseDelay {
         this.set("boost", config.getInt("ItemUseDelays.Boost"));
         this.set("chikun", config.getInt("ItemUseDelays.Chikun"));
         this.set("steal", config.getInt("ItemUseDelays.Steal"));
+        this.set("randomtp", config.getInt("ItemUseDelays.RandomTp"));
     }
 
     public long valueOf(String name) {
