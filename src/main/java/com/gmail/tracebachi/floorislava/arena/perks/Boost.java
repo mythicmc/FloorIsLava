@@ -57,4 +57,9 @@ public class Boost extends Perk {
     public String getCooldownMessage() {
         return "You cannot boost yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return false;
+    }
 }

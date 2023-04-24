@@ -167,15 +167,6 @@ public class FloorGuiMenuListener implements Listener {
             if (pointsAmount == 0) pointsAmount = 1;
             updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
             updateItemStackAmount(inventory, FloorGuiMenu.BOOST_ITEM, 23, loadout.boost);
-        } else if (matchesItemStack(FloorGuiMenu.CHIKUN_ITEM, clickedItem)) {
-            int oldCount = loadout.chikun;
-            loadout.chikun = Math.max(0, loadout.chikun + change);
-            playSoundOnCondition(player, loadout.chikun != oldCount);
-
-            int pointsAmount = maxPoints - loadout.countSum();
-            if (pointsAmount == 0) pointsAmount = 1;
-            updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
-            updateItemStackAmount(inventory, FloorGuiMenu.CHIKUN_ITEM, 24, loadout.chikun);
         } else if (matchesItemStack(FloorGuiMenu.STEAL_ITEM, clickedItem)) {
             int oldCount = loadout.steal;
             loadout.steal = Math.max(0, loadout.steal + change);
@@ -184,7 +175,7 @@ public class FloorGuiMenuListener implements Listener {
             int pointsAmount = maxPoints - loadout.countSum();
             if (pointsAmount == 0) pointsAmount = 1;
             updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
-            updateItemStackAmount(inventory, FloorGuiMenu.STEAL_ITEM, 25, loadout.steal);
+            updateItemStackAmount(inventory, FloorGuiMenu.STEAL_ITEM, 24, loadout.steal);
         } else if (matchesItemStack(FloorGuiMenu.RANDOM_TP_ITEM, clickedItem)) {
             int oldCount = loadout.randomTp;
             loadout.randomTp = Math.max(0, loadout.randomTp + change);
@@ -193,7 +184,16 @@ public class FloorGuiMenuListener implements Listener {
             int pointsAmount = maxPoints - loadout.countSum();
             if (pointsAmount == 0) pointsAmount = 1;
             updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
-            updateItemStackAmount(inventory, FloorGuiMenu.RANDOM_TP_ITEM, 26, loadout.randomTp);
+            updateItemStackAmount(inventory, FloorGuiMenu.RANDOM_TP_ITEM, 25, loadout.randomTp);
+        } else if (matchesItemStack(FloorGuiMenu.ANTI_PERK_ITEM, clickedItem)) {
+            int oldCount = loadout.antiPerk;
+            loadout.antiPerk = Math.max(0, loadout.antiPerk + change);
+            playSoundOnCondition(player, loadout.antiPerk != oldCount);
+
+            int pointsAmount = maxPoints - loadout.countSum();
+            if (pointsAmount == 0) pointsAmount = 1;
+            updateItemStackAmount(inventory, FloorGuiMenu.POINTS_ITEM, 13, pointsAmount);
+            updateItemStackAmount(inventory, FloorGuiMenu.ANTI_PERK_ITEM, 26, loadout.antiPerk);
         }
     }
 

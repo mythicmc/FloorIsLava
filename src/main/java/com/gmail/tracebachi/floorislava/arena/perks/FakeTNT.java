@@ -53,4 +53,9 @@ public class FakeTNT extends Perk{
     public String getCooldownMessage() {
         return "You cannot throw fake TNT yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return false;
+    }
 }

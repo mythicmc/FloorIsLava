@@ -38,9 +38,10 @@ public class PerkHandler {
         this.add("web", new Web(arenaArea));
         this.add("invis", new Invis(plugin));
         this.add("boost", new Boost(arenaArea));
-        this.add("chikun", new Chikun());
         this.add("steal", new Steal());
         this.add("randomtp", new RandomTp(arenaArea));
+        // Rip Chikun
+        // this.add("chikun", new Chikun());
     }
 
     private void add(String name, Perk perk) {

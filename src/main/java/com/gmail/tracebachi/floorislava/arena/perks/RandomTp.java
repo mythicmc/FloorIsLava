@@ -51,4 +51,9 @@ public class RandomTp extends Perk {
     public String getCooldownMessage() {
         return "You cannot be teleported yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return false;
+    }
 }

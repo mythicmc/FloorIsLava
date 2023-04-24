@@ -36,6 +36,11 @@ public class Web extends Perk {
         return "You cannot web players yet.";
     }
 
+    @Override
+    public boolean isOffensive() {
+        return true;
+    }
+
     private void createWebsAroundPlayer(Player player, int radius) {
         int px = player.getLocation().getBlockX();
         int py = player.getLocation().getBlockY();

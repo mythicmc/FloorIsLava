@@ -47,9 +47,9 @@ public class FloorGuiMenu {
     public static final ItemStack WEB_ITEM = new ItemStack(Material.COBWEB);
     public static final ItemStack INVIS_ITEM = new ItemStack(Material.BLAZE_ROD);
     public static final ItemStack BOOST_ITEM = new ItemStack(Material.FEATHER);
-    public static final ItemStack CHIKUN_ITEM = new ItemStack(Material.EGG);
     public static final ItemStack STEAL_ITEM = new ItemStack(Material.FLINT_AND_STEEL);
     public static final ItemStack RANDOM_TP_ITEM = new ItemStack(Material.CHORUS_FRUIT);
+    public static final ItemStack ANTI_PERK_ITEM = new ItemStack(Material.TOTEM_OF_UNDYING);
 
     private final Arena arena;
     private final Inventory inventory;
@@ -85,9 +85,9 @@ public class FloorGuiMenu {
         inventory.setItem(21, cloneWithAmount(WEB_ITEM, loadout.web));
         inventory.setItem(22, cloneWithAmount(INVIS_ITEM, loadout.invis));
         inventory.setItem(23, cloneWithAmount(BOOST_ITEM, loadout.boost));
-        inventory.setItem(24, cloneWithAmount(CHIKUN_ITEM, loadout.chikun));
-        inventory.setItem(25, cloneWithAmount(STEAL_ITEM, loadout.steal));
-        inventory.setItem(26, cloneWithAmount(RANDOM_TP_ITEM, loadout.randomTp));
+        inventory.setItem(24, cloneWithAmount(STEAL_ITEM, loadout.steal));
+        inventory.setItem(25, cloneWithAmount(RANDOM_TP_ITEM, loadout.randomTp));
+        inventory.setItem(26, cloneWithAmount(ANTI_PERK_ITEM, loadout.antiPerk));
 
         player.openInventory(inventory);
     }
@@ -217,17 +217,6 @@ public class FloorGuiMenu {
                 ChatColor.YELLOW + "Right Click: Remove"));
         BOOST_ITEM.setItemMeta(meta);
 
-        meta = CHIKUN_ITEM.getItemMeta();
-        if (meta == null)
-            throw new NullPointerException("The chikun item meta is null for some reasons.");
-        meta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Chikun Bomb");
-        meta.setLore(Arrays.asList(
-                ChatColor.WHITE + "Instantly spawn in",
-                ChatColor.WHITE + "chikun distractions!",
-                ChatColor.YELLOW + "Left Click: Add",
-                ChatColor.YELLOW + "Right Click: Remove"));
-        CHIKUN_ITEM.setItemMeta(meta);
-
         meta = STEAL_ITEM.getItemMeta();
         if (meta == null)
             throw new NullPointerException("The steal item meta is null for some reasons.");
@@ -251,5 +240,19 @@ public class FloorGuiMenu {
                 ChatColor.YELLOW + "Left Click: Add",
                 ChatColor.YELLOW + "Right Click: Remove"));
         RANDOM_TP_ITEM.setItemMeta(meta);
+
+        meta = ANTI_PERK_ITEM.getItemMeta();
+        if (meta == null)
+            throw new NullPointerException("The anti perk item meta is null for some reasons.");
+        meta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Consumable Anti Perk");
+        meta.setLore(Arrays.asList(
+                ChatColor.WHITE + "Cancels any offensive perk",
+                ChatColor.WHITE + "used against you and stops",
+                ChatColor.WHITE + "all perks from working when",
+                ChatColor.WHITE + "near you or completely if",
+                ChatColor.WHITE + "there's only 1 player left!",
+                ChatColor.YELLOW + "Left Click: Add",
+                ChatColor.YELLOW + "Right Click: Remove"));
+        ANTI_PERK_ITEM.setItemMeta(meta);
     }
 }

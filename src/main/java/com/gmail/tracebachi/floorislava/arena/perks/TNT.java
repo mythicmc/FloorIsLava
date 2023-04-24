@@ -49,4 +49,9 @@ public class TNT extends Perk {
     public String getCooldownMessage() {
         return "You cannot use TNT yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return false;
+    }
 }

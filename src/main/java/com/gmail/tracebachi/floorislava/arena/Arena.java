@@ -409,13 +409,13 @@ public class Arena implements Listener {
             ItemStack[] newItems = new ItemStack[]{
                     Loadout.FAKE_TNT_ITEM.clone(),
                     Loadout.BOOST_ITEM.clone(),
-                    Loadout.CHIKUN_ITEM.clone(),
                     Loadout.HOOK_ITEM.clone(),
                     Loadout.INVIS_ITEM.clone(),
                     Loadout.STEAL_ITEM.clone(),
                     Loadout.WEB_ITEM.clone(),
                     Loadout.TNT_ITEM.clone(),
-                    Loadout.RANDOM_TP_ITEM.clone()};
+                    Loadout.RANDOM_TP_ITEM.clone(),
+                    Loadout.ANTI_PERK_ITEM.clone()};
             int i, choice, itemIndex;
             ItemStack item;
             int chestItemAmount = 2;
@@ -460,7 +460,8 @@ public class Arena implements Listener {
 
         Perk perk = perkHandler.getPerkFromMaterial(heldItem.getType());
         if (perk == null) return;
-        perk.activate(event, null);
+
+        perk.activate(event, null, playing);
         player.updateInventory();
     }
 
@@ -481,7 +482,8 @@ public class Arena implements Listener {
         Perk perk = perkHandler.getPerkFromMaterial(heldItem.getType());
         if (perk == null)
             return;
-        perk.activate(null, event);
+
+        perk.activate(null, event, playing);
         player.updateInventory();
     }
 
@@ -815,7 +817,7 @@ public class Arena implements Listener {
     }
 
     private void removePerks() {
-        for (Map.Entry<String, PlayerState> entry: playing.entrySet()) {
+        for (Map.Entry<String, PlayerState> entry : playing.entrySet()) {
             Player player = Bukkit.getPlayerExact(entry.getKey());
             if (player == null)
                 continue;
@@ -939,11 +941,6 @@ public class Arena implements Listener {
             contents[c].setAmount(loadout.boost);
             c++;
         }
-        if (loadout.chikun > 0) {
-            contents[c] = Loadout.CHIKUN_ITEM.clone();
-            contents[c].setAmount((loadout.chikun));
-            c++;
-        }
         if (loadout.steal > 0) {
             contents[c] = Loadout.STEAL_ITEM.clone();
             contents[c].setAmount((loadout.steal));
@@ -952,6 +949,11 @@ public class Arena implements Listener {
         if (loadout.randomTp > 0) {
             contents[c] = Loadout.RANDOM_TP_ITEM.clone();
             contents[c].setAmount((loadout.randomTp));
+            c++;
+        }
+        if (loadout.antiPerk > 0) {
+            contents[c] = Loadout.ANTI_PERK_ITEM.clone();
+            contents[c].setAmount((loadout.antiPerk));
         }
         return contents;
     }

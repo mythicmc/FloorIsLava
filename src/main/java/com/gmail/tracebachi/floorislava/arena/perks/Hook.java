@@ -52,4 +52,9 @@ public class Hook extends Perk {
     public String getCooldownMessage() {
         return "You cannot throw players yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return true;
+    }
 }

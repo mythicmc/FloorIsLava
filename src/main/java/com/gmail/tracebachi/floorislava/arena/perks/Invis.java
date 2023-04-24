@@ -46,4 +46,9 @@ public class Invis extends Perk {
     public String getCooldownMessage() {
         return "You cannot go invisible yet.";
     }
+
+    @Override
+    public boolean isOffensive() {
+        return false;
+    }
 }

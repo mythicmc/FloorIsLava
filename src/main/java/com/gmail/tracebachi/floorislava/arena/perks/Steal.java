@@ -60,6 +60,11 @@ public class Steal extends Perk {
         return "You cannot steal yet.";
     }
 
+    @Override
+    public boolean isOffensive() {
+        return true;
+    }
+
     private boolean playerHasNoItems(Player player) {
         for (ItemStack itemStack: player.getInventory().getStorageContents()) {
             if (itemStack != null && itemStack.getType() != Material.AIR)
