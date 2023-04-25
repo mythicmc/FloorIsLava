@@ -67,9 +67,13 @@ public abstract class Perk {
             // someone has an anti perk
             if (!candidates.isEmpty() || endGameAntiPerk) {
                 Player chosenPlayer = null;
-                if (endGameAntiPerk) chosenPlayer = endGameAntiPerkHolder;
-                else {
+                if (endGameAntiPerk && !endGameAntiPerkHolder.getName().equalsIgnoreCase(player.getName())) {
+                    chosenPlayer = endGameAntiPerkHolder;
+                } else {
                     for (Player candidate : candidates) {
+                        if (candidate.getName().equalsIgnoreCase(player.getName())) {
+                            continue;
+                        }
                         Location playerLocation = player.getLocation();
                         double closestPlayerDistance = chosenPlayer == null ? Double.MAX_VALUE
                                 : chosenPlayer.getLocation().distance(playerLocation);
@@ -80,27 +84,28 @@ public abstract class Perk {
                     }
                 }
 
-                // Consume the chosen player's Anti Perk totem
-                assert chosenPlayer != null;
-                chosenPlayer.sendMessage(GOOD + "Your Consumable Anti Perk just stopped " + player.getName() + "'s perk!");
-                chosenPlayer.playSound(chosenPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-                for (ItemStack item : chosenPlayer.getInventory()) {
-                    if (item != null && item.getType() == Material.TOTEM_OF_UNDYING) {
-                        item.setAmount(item.getAmount() - 1);
+                if (chosenPlayer != null) {
+                    // Consume the chosen player's Anti Perk totem
+                    chosenPlayer.sendMessage(GOOD + "Your Consumable Anti Perk just stopped " + player.getName() + "'s perk!");
+                    chosenPlayer.playSound(chosenPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                    for (ItemStack item : chosenPlayer.getInventory()) {
+                        if (item != null && item.getType() == Material.TOTEM_OF_UNDYING) {
+                            item.setAmount(item.getAmount() - 1);
+                        }
                     }
-                }
 
-                // Inform the perk user about what happened
-                if (endGameAntiPerk) {
-                    player.sendMessage(BAD + "Since it's end-game and " + chosenPlayer.getName()
-                            + " has a Consumable Anti Perk, it just stopped you!");
-                } else {
-                    player.sendMessage(BAD + "Looks like " + chosenPlayer.getName()
-                            + " has a Consumable Anti Perk and it stopped you because you're near them!");
+                    // Inform the perk user about what happened
+                    if (endGameAntiPerk) {
+                        player.sendMessage(BAD + "Since it's end-game and " + chosenPlayer.getName()
+                                + " has a Consumable Anti Perk, it just stopped you!");
+                    } else {
+                        player.sendMessage(BAD + "Looks like " + chosenPlayer.getName()
+                                + " has a Consumable Anti Perk and it stopped you because you're near them!");
+                    }
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+                    heldItem.setAmount(heldItem.getAmount() - 1);
+                    return;
                 }
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
-                heldItem.setAmount(heldItem.getAmount() - 1);
-                return;
             }
         } else if (entityEvent != null && entityEvent.getRightClicked() instanceof Player) {
             // Offensive Anti Perk behaviour for both anti perk totem users and non-perkers
