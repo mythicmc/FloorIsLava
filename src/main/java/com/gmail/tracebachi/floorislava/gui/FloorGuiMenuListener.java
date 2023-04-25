@@ -103,7 +103,9 @@ public class FloorGuiMenuListener implements Listener {
             change = 1;
         else
             change = -1;
-        if (change == 1 && loadout.countSum() == maxPoints) {
+        if ((change == 1 && loadout.countSum() >= maxPoints
+                || (matchesItemStack(FloorGuiMenu.ANTI_PERK_ITEM, clickedItem)
+                        && (maxPoints - loadout.countSum()) < 3 && change == 1))) {
             if (clickedItem.getType() != Material.AIR)
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
             return;
@@ -187,6 +189,7 @@ public class FloorGuiMenuListener implements Listener {
             updateItemStackAmount(inventory, FloorGuiMenu.RANDOM_TP_ITEM, 25, loadout.randomTp);
         } else if (matchesItemStack(FloorGuiMenu.ANTI_PERK_ITEM, clickedItem)) {
             int oldCount = loadout.antiPerk;
+            // Anti Perk Totem is worth 2 loadouts
             loadout.antiPerk = Math.max(0, loadout.antiPerk + change);
             playSoundOnCondition(player, loadout.antiPerk != oldCount);
 

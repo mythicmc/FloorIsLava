@@ -45,8 +45,6 @@ public abstract class Perk {
         // Consumable anti perk behaviour for non-offensive perks
         if (!isOffensive()) {
             List<Player> candidates = new ArrayList<>();
-            // If we're in end-game, we know someone has an anti perk totem
-            Player endGameAntiPerkHolder = null;
             for (Map.Entry<String, PlayerState> entry : playersPlaying.entrySet()) {
                 Player playingPlayer = Bukkit.getPlayer(entry.getKey());
                 if (playingPlayer == null) {
@@ -54,33 +52,26 @@ public abstract class Perk {
                 }
 
                 if (playingPlayer.getInventory().contains(Material.TOTEM_OF_UNDYING)) {
-                    endGameAntiPerkHolder = playingPlayer;
-                    if (playingPlayer.getLocation().distance(player.getLocation()) <= 4) {
+                    if (playingPlayer.getLocation().distance(player.getLocation()) <= 3) {
                         candidates.add(playingPlayer);
                     }
                 }
             }
 
-            boolean endGameAntiPerk = playersPlaying.size() == 2 && endGameAntiPerkHolder != null;
-
             // If there's players in range with the anti perk, or we're in the end game stage and
             // someone has an anti perk
-            if (!candidates.isEmpty() || endGameAntiPerk) {
+            if (!candidates.isEmpty()) {
                 Player chosenPlayer = null;
-                if (endGameAntiPerk && !endGameAntiPerkHolder.getName().equalsIgnoreCase(player.getName())) {
-                    chosenPlayer = endGameAntiPerkHolder;
-                } else {
-                    for (Player candidate : candidates) {
-                        if (candidate.getName().equalsIgnoreCase(player.getName())) {
-                            continue;
-                        }
-                        Location playerLocation = player.getLocation();
-                        double closestPlayerDistance = chosenPlayer == null ? Double.MAX_VALUE
-                                : chosenPlayer.getLocation().distance(playerLocation);
-                        double playerInRangeDistance = candidate.getLocation().distance(playerLocation);
-                        if (closestPlayerDistance > playerInRangeDistance) {
-                            chosenPlayer = candidate;
-                        }
+                for (Player candidate : candidates) {
+                    if (candidate.getName().equalsIgnoreCase(player.getName())) {
+                        continue;
+                    }
+                    Location playerLocation = player.getLocation();
+                    double closestPlayerDistance = chosenPlayer == null ? Double.MAX_VALUE
+                            : chosenPlayer.getLocation().distance(playerLocation);
+                    double playerInRangeDistance = candidate.getLocation().distance(playerLocation);
+                    if (closestPlayerDistance > playerInRangeDistance) {
+                        chosenPlayer = candidate;
                     }
                 }
 
@@ -95,13 +86,8 @@ public abstract class Perk {
                     }
 
                     // Inform the perk user about what happened
-                    if (endGameAntiPerk) {
-                        player.sendMessage(BAD + "Since it's end-game and " + chosenPlayer.getName()
-                                + " has a Consumable Anti Perk, it just stopped you!");
-                    } else {
-                        player.sendMessage(BAD + "Looks like " + chosenPlayer.getName()
-                                + " has a Consumable Anti Perk and it stopped you because you're near them!");
-                    }
+                    player.sendMessage(BAD + "Looks like " + chosenPlayer.getName()
+                            + " has a Consumable Anti Perk and it stopped you because you're near them!");
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
                     heldItem.setAmount(heldItem.getAmount() - 1);
                     return;

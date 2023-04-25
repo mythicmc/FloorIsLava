@@ -118,6 +118,6 @@ public class Loadout {
     }
 
     public int countSum() {
-        return faketnt + tnt + hook + web + invis + boost + steal + randomTp + antiPerk;
+        return faketnt + tnt + hook + web + invis + boost + steal + randomTp + (antiPerk * 3);
     }
 }

@@ -36,11 +36,12 @@ public class Boost extends Perk {
         vector.multiply(2);
 
         // Chance of failure (nerf)
-        if (Math.random() <= 0.33) {
+        // Removed for now
+        /*if (Math.random() <= 0.33) {
             e.getPlayer().sendMessage(BAD + "Oh, no! Sounds like your boost failed.");
             e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1f, 1f);
             return true;
-        }
+        }*/
 
         e.getPlayer().sendMessage(GOOD + "Woooooosh...");
         e.getPlayer().setVelocity(vector);
